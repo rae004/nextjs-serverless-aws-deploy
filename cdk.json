@@ -1,0 +1,6 @@
+{
+  "app": "yarn run deploy",
+  "context": {
+    "@aws-cdk/core:newStyleStackSynthesis": true
+  }
+}

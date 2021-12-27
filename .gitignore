@@ -14,6 +14,9 @@
 
 # production
 /build
+/build-production
+/build-staging
+/cdk.out
 
 # misc
 .DS_Store
