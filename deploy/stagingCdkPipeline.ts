@@ -5,8 +5,8 @@ import {
     ShellStep,
 } from '@aws-cdk/pipelines';
 import { ComputeType } from '@aws-cdk/aws-codebuild';
-import { Subscription, SubscriptionProtocol, Topic } from '@aws-cdk/aws-sns';
-import { NotificationRule } from '@aws-cdk/aws-codestarnotifications';
+// import { Subscription, SubscriptionProtocol, Topic } from '@aws-cdk/aws-sns';
+// import { NotificationRule } from '@aws-cdk/aws-codestarnotifications';
 import { nextjsAppStage } from './nextjsAppStage';
 
 class nextjsServerlessStagingPipeline extends Stack {
@@ -24,8 +24,8 @@ class nextjsServerlessStagingPipeline extends Stack {
             AppName: this.node.tryGetContext('appNameTag'),
             Environment: environmentTag,
         };
-        const { deployNotificationList } =
-            this.node.tryGetContext('appResources');
+        // const { deployNotificationList } =
+        //     this.node.tryGetContext('appResources');
 
         //Get our source repo
         const repo = CodePipelineSource.connection(
@@ -36,26 +36,26 @@ class nextjsServerlessStagingPipeline extends Stack {
             },
         );
 
-        // create sns topic for pipeline notifications.
-        const topic = new Topic(
-            this,
-            `${appAbbr}-${environmentTag}-pipeline-topic`,
-            {
-                topicName: `${appName}-${environmentTag}-pipeline-notifications`,
-            },
-        );
-        // add sns subscription for each email in notify list
-        for (const emailIndex in deployNotificationList) {
-            new Subscription(
-                this,
-                `${appAbbr}-${environmentTag}-pipeline-subscription-${emailIndex}`,
-                {
-                    topic,
-                    endpoint: `${deployNotificationList[emailIndex]}`,
-                    protocol: SubscriptionProtocol.EMAIL,
-                },
-            );
-        }
+        // // create sns topic for pipeline notifications.
+        // const topic = new Topic(
+        //     this,
+        //     `${appAbbr}-${environmentTag}-pipeline-topic`,
+        //     {
+        //         topicName: `${appName}-${environmentTag}-pipeline-notifications`,
+        //     },
+        // );
+        // // add sns subscription for each email in notify list
+        // for (const emailIndex in deployNotificationList) {
+        //     new Subscription(
+        //         this,
+        //         `${appAbbr}-${environmentTag}-pipeline-subscription-${emailIndex}`,
+        //         {
+        //             topic,
+        //             endpoint: `${deployNotificationList[emailIndex]}`,
+        //             protocol: SubscriptionProtocol.EMAIL,
+        //         },
+        //     );
+        // }
 
         const pipeline = new CodePipeline(this, `${appName}-staging-pipeline`, {
             pipelineName: `${appName}-staging-pipeline`,
@@ -97,20 +97,20 @@ class nextjsServerlessStagingPipeline extends Stack {
         // build the pipeline for use in codestar notification rule
         pipeline.buildPipeline();
 
-        // create codestar notification rule for pipeline
-        new NotificationRule(
-            this,
-            `${appName}-${environmentTag}-pipeline-notification`,
-            {
-                source: pipeline.pipeline,
-                events: [
-                    'codepipeline-pipeline-pipeline-execution-failed',
-                    'codepipeline-pipeline-pipeline-execution-canceled',
-                    'codepipeline-pipeline-pipeline-execution-succeeded',
-                ],
-                targets: [topic],
-            },
-        );
+        // // create codestar notification rule for pipeline
+        // new NotificationRule(
+        //     this,
+        //     `${appName}-${environmentTag}-pipeline-notification`,
+        //     {
+        //         source: pipeline.pipeline,
+        //         events: [
+        //             'codepipeline-pipeline-pipeline-execution-failed',
+        //             'codepipeline-pipeline-pipeline-execution-canceled',
+        //             'codepipeline-pipeline-pipeline-execution-succeeded',
+        //         ],
+        //         targets: [topic],
+        //     },
+        // );
     }
 }
 
