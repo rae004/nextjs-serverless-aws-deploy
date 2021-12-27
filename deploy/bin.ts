@@ -7,6 +7,12 @@ import { nextjsServerlessStagingPipeline } from './stagingCdkPipeline';
 
 const envPath = '.env';
 const localEnvPath = '.env.local';
+if (fs.existsSync(`${localEnvPath}`)) {
+    dotenv.config({ path: `${localEnvPath}` });
+} else {
+    dotenv.config({ path: `${envPath}` });
+}
+
 // todo add env domain envs to make configurable.
 const appEnvironmentResources = {
     productionResourceSettings: {
@@ -17,20 +23,17 @@ const appEnvironmentResources = {
         domainZoneName: 'rae-dev.com',
     },
     stagingResourceSettings: {
+        sourceRepoConnectionArn: `${process.env.AWS_GITHUB_CONNECTION_ARN}`,
+        stagingRepoString: `${process.env.STAGING_REPO_STRING}`,
+        stagingSourceBranch: `${process.env.STAGING_SOURCE_BRANCH}`,
         lambda: { memoryLimitMiB: 512 },
-        domain: '*.rae-dev.com',
-        domainSslCertArn: '',
-        domainHostedZoneId: '',
-        domainZoneName: 'rae-dev.com',
+        domain: `${process.env.STAGING_DOMAIN}`,
+        domainSslCertArn: `${process.env.STAGING_DOMAIN_SSL_CERT_ARN}`,
+        domainHostedZoneId: `${process.env.STAGING_HOSTED_ZONE_ID}`,
+        domainZoneName: `${process.env.STAGING_DOMAIN_ZONE_NAME}`,
     },
     deployNotificationList: ['rae004dev@gmail.com'],
 };
-
-if (fs.existsSync(`${localEnvPath}`)) {
-    dotenv.config({ path: `${localEnvPath}` });
-} else {
-    dotenv.config({ path: `${envPath}` });
-}
 
 (async () => {
     try {

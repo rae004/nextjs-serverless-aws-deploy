@@ -29,11 +29,10 @@ class nextjsServerlessStagingPipeline extends Stack {
 
         //Get our source repo
         const repo = CodePipelineSource.connection(
-            'apollidondev/cm-nextjs-app-engine',
-            'develop',
+            `${stagingResourceSettings.stagingRepoString}`,
+            `${stagingResourceSettings.stagingSourceBranch}`,
             {
-                connectionArn:
-                    'arn:aws:codestar-connections:us-east-1:764751313814:connection/f26caff1-72ea-4e30-97ea-c35696052729',
+                connectionArn: `${stagingResourceSettings.sourceRepoConnectionArn}`,
             },
         );
 
