@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { App } from '@aws-cdk/core';
 import { Builder } from '@sls-next/lambda-at-edge';
 import { version } from '../package.json';
+import { nextjsServerlessStagingPipeline } from './stagingCdkPipeline';
 
 const envPath = '.env';
 const localEnvPath = '.env.local';
@@ -54,7 +55,7 @@ if (fs.existsSync(`${localEnvPath}`)) {
         // // Create CDK app instance test update
         const app = new App({
             context: {
-                appName: 'NextJs Serverless Starter',
+                appName: 'nextjs-serverless-starter',
                 appAbbr: 'rae-dev-next-js',
                 account: `${process.env.AWS_ACCOUNT_ID}`,
                 region: `${process.env.AWS_REGION_DEFAULT}`,
@@ -66,30 +67,32 @@ if (fs.existsSync(`${localEnvPath}`)) {
                 appResources: appEnvironmentResources,
             },
         });
-        console.log('our aws id: ', app.node.tryGetContext('account'));
-        console.log('our aws region: ', app.node.tryGetContext('region'));
 
-        // const appName = app.node.tryGetContext('appName');
-        // const stagingEnvTag = app.node.tryGetContext('stagingEnvTag');
+        const appName = app.node.tryGetContext('appName');
+        const stagingEnvTag = app.node.tryGetContext('stagingEnvTag');
         // const productionEnvTag = app.node.tryGetContext('productionEnvTag');
-        // const awsContextTags = {
-        //     Project: app.node.tryGetContext('projectTag'),
-        //     AppVersion: app.node.tryGetContext('appVersionTag'),
-        //     AppName: app.node.tryGetContext('appNameTag'),
-        // };
+        const awsContextTags = {
+            Project: app.node.tryGetContext('projectTag'),
+            AppVersion: app.node.tryGetContext('appVersionTag'),
+            AppName: app.node.tryGetContext('appNameTag'),
+        };
 
-        // // Create staging CDK pipeline instance
-        // new CmAppEngineStagingPipeline(app, `${appName}-staging-pipeline`, {
-        //     env: {
-        //         region: 'us-east-1',
-        //     },
-        //     analyticsReporting: true,
-        //     description: `Deployment of ${stagingEnvTag} ${appName} NextJS using Serverless CDK Construct`,
-        //     tags: {
-        //         Environment: stagingEnvTag,
-        //         ...awsContextTags,
-        //     },
-        // });
+        // Create staging CDK pipeline instance
+        new nextjsServerlessStagingPipeline(
+            app,
+            `${appName}-staging-pipeline`,
+            {
+                env: {
+                    region: 'us-east-1',
+                },
+                analyticsReporting: true,
+                description: `Deployment of ${stagingEnvTag} ${appName} NextJS using Serverless CDK Construct`,
+                tags: {
+                    Environment: stagingEnvTag,
+                    ...awsContextTags,
+                },
+            },
+        );
 
         // Create production CDK pipeline instance
         // new CmAppEngineProductionPipeline(
