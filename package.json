@@ -15,6 +15,7 @@
     "test": "jest",
     "test-update": "jest --update-snapshot",
     "test-coverage": "jest --coverage",
+    "test-all": "yarn lint && yarn type-check && yarn test",
     "prepare": "husky install"
   },
   "husky": {
