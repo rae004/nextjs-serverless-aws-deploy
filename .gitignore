@@ -37,4 +37,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 # IDEs and such
-#.idea/
+.idea/
