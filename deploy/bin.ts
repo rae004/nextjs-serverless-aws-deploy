@@ -83,7 +83,7 @@ if (fs.existsSync(`${localEnvPath}`)) {
             `${appName}-staging-pipeline`,
             {
                 env: {
-                    region: 'us-east-1',
+                    region: `${app.node.tryGetContext('region')}`,
                 },
                 analyticsReporting: true,
                 description: `Deployment of ${stagingEnvTag} ${appName} NextJS using Serverless CDK Construct`,
