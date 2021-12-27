@@ -17,7 +17,6 @@
 /build-production
 /build-staging
 /cdk.out
-.env
 
 # misc
 .DS_Store
