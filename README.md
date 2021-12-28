@@ -270,9 +270,28 @@ Jest configuration options are set in `jest.config.js` in the root project direc
 # Linting
 
 
+NextJs create app helper install ESLint by default. This starter extends  default settings, adds additional settings, plus configures the ESLint Prettier plugin for code styling.
 
+>**Default Extended Rules Sets**:
+>* eslint:recommended
+>* plugin:react/recommended
+>* plugin:@typescript-eslint/recommended
+>* plugin:@next/next/recommended
+>* prettier
 
+>**Default Plugins Used**:
+>* @typescript-eslint
+>* prettier
+>* react
+>* react-hooks
+>* jest
+>* import
 
+ESLint configuration options are set in `.eslintrc.json`.
+
+>* [NextJs Config](https://nextjs.org/docs/basic-features/eslint#eslint-config)
+>* [ESLint Rules](https://eslint.org/docs/rules/)
+>* [Prettier Plugin Options](https://github.com/prettier/eslint-plugin-prettier#options)
 
 
 # Git Hooks
