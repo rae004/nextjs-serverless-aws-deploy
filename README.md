@@ -40,7 +40,7 @@ First, install required packages:
 yarn install
 ```
 
-> **Note**: It is important to use `yarn` to install dependencies because of the `yarn.lock` file. Using npm would likely result in errors.
+> **Note**: It is important to use `yarn` version 1.22.* to install dependencies because of the `yarn.lock` file. Using npm would likely result in errors.
 >
 > [_Installing Yarn_](https://classic.yarnpkg.com/lang/en/docs/install/#install-via-npm)
 
@@ -306,10 +306,15 @@ ESLint configuration options are set in `.eslintrc.json`.
 
 This starter comes with Git Hooks already configured using [Husky](https://www.npmjs.com/package/husky) package.
 
+Commands ran before committing to repo.
 > pre-commit: `yarn run test-all`
 
+Commands ran before pushing to repo.
 > pre-push: `yarn run type-check`
 
+The `package.json` has a script called `prepare` intended to help [initialize Husky](https://typicode.github.io/husky/#/?id=manual). If you need to re-install or re-configure Husky, run `yarn prepare` to generate new Husky files.
+
+See documentation for [Creating additional Git Hooks](https://typicode.github.io/husky/#/?id=create-a-hook).
 
 # Deployment
 ### ([top](#nextjs-aws-serverless-deploy))
