@@ -125,8 +125,9 @@ Below are explanations for each script you'll find in the `package.json`.
 Start a local/development build of your app. Useful while developing your application.
 
 #### Create Production Build
-######**_This will not be used when deployed, see [Deployment](#deployment) section for more details._**
-######**_Helpful when testing issues with the CI/CD Pipeline_**
+**_This will not be used when deployed, see [Deployment](#deployment) section for more details._**
+
+**_Helpful when testing issues with the CI/CD Pipeline_**
 ```json
 {
   "build": "next build"
@@ -189,14 +190,14 @@ See [Jest CLI coverage Flage](https://jestjs.io/docs/cli#--coverageboolean) for 
 ```
 Runs all Tests  for ESLint, TSC, and Jest. See [Linting](#Linting), [TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html), [Testing](#testing) for more details
 #### Install Husky Git Hooks
-###### This should only be used when setting up the project for the first time.
+This should only be used when setting up the project for the first time.
 ```json
   "prepare": "husky install"
 ```
 See the [Git Hooks](#git-hooks) section for more details.
 
 #### Aws Cdk Deployments
-###### Please read [Deployment](#deployment) section before using these commands.
+Read [Deployment](#deployment) section before using these commands.
 ```json
   "cdk": "cdk",
   "deploy": "ts-node deploy/bin.ts"
