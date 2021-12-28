@@ -36,7 +36,12 @@ This Next Js starter repo is configured with:
 
 First, install required packages:
 
-```bash
+```shell
+mkdir my-new-nextjs-app && cd my-new-nextjs-app
+```
+
+
+```shell
 yarn install
 ```
 
@@ -398,7 +403,7 @@ These values are used throughout the CDK Deployment to ensure naming and tagging
 
 1. Push all changes you intend to deploy to the branch set as `STAGING_SOURCE_BRANCH` in `.env`.
 ---
-2. Find Staging pipeline name by running `cdk ls`, example name: `nextjs-serverless-starter-staging-pipeline`
+2. Find Staging pipeline name by running `cdk ls`.
     * Make sure to use the pipeline name, using the stage name will result in the app being deployed without a CI/CD pipeline. The pipeline name will **_not_** have any slashes, just hyphens.
       * Pipeline name: `nextjs-serverless-starter-staging-pipeline`
       * Stage name: `nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js`
@@ -412,4 +417,4 @@ These values are used throughout the CDK Deployment to ensure naming and tagging
    * You will need to manually confirm to continue the deployment.
    * This will deploy the app to AWS via cloudformation.
 ---
-5. Once the CLI is complete you will see the Pipeline running and be able to track progress by searching for the appName set in the [CDK App Context](#setting-cdk-app-context) from the [AWS Code Pipeline Console](https://console.aws.amazon.com/codesuite/codepipeline/pipelines)
+5. Once the CLI is complete you will see the Pipeline running and be able to track progress by searching for the `appName` set in the [CDK App Context](#setting-cdk-app-context) from the [AWS Code Pipeline Console](https://console.aws.amazon.com/codesuite/codepipeline/pipelines)
