@@ -320,3 +320,70 @@ See documentation for [Creating additional Git Hooks](https://typicode.github.io
 ### ([top](#nextjs-aws-serverless-deploy))
 
 The AWS CDK allows you to deploy infrastructure as code. This starter deploys a NextJs application to AWS Lambda and S3, utilizing the Serverless NextJs CDK Construct. This does require an AWS account. You will also need to install and configure the AWS CLI in order to create the CI/CD Pipeline for the first time.
+
+### Pre-requisites
+>* [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+>* [Configure AWS CLI](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
+>* [Set Required Variables in .env](#env-example)
+>* Install AWS CDK Package Globally: `yarn global add aws-cdk@^1.128.0`
+>
+> **_Note_**: This Starter is setup to use AWS CDK v1, installing v2 will result in errors.
+
+### Using CDK Cli
+AWS Cdk command can be called directly, for example using `cdk ls` will list all Stacks in the cdk app.
+
+>**Get Stack Names**
+>
+> `cdk ls`
+>
+> example output:
+> ```shell
+> info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env.local
+> info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env
+> info  - Checking validity of types...
+> info  - Creating an optimized production build...
+> info  - Compiled successfully
+> info  - Collecting page data...
+> info  - Generating static pages (0/3)
+> info  - Generating static pages (3/3)
+> info  - Finalizing page optimization...
+>
+> Page                                       Size     First Load JS
+> ┌ ○ /                                      5.04 kB        76.7 kB
+> ├   └ css/b282b959608f58d4.css             718 B
+> ├   /_app                                  0 B            71.7 kB
+> ├ ○ /404                                   180 B          71.8 kB
+> └ λ /api/hello                             0 B            71.7 kB
+> + First Load JS shared by all              71.7 kB
+>   ├ chunks/framework-3ccec772d1fa8b6b.js   42.1 kB
+>   ├ chunks/main-404bdd3acbdd01ab.js        28.3 kB
+>   ├ chunks/pages/_app-fc81d34f352835e7.js  496 B
+>   ├ chunks/webpack-27593bf8d60abcde.js     757 B
+>   └ css/2974ebc8daa97b04.css               209 B
+>
+> λ  (Lambda)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
+> ○  (Static)  automatically rendered as static HTML (uses no initial props)
+>
+> Done in 14.80s.
+> nextjs-serverless-starter-staging-pipeline
+> nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js
+> ```
+
+### Deploy Staging CI/CD Pipeline (first time)
+
+1. Push all changes you intend to deploy to the branch set as `STAGING_SOURCE_BRANCH` in `.env`.
+---
+2. Find Staging pipeline name by running `cdk ls`, example name: `nextjs-serverless-starter-staging-pipeline`
+    * Make sure to use the pipeline name, using the stage name will result in the app being deployed without a CI/CD pipeline. The pipeline name will **_not_** have any slashes, just hyphens.
+      * pipeline name: `nextjs-serverless-starter-staging-pipeline`
+      * stage name: `nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js`
+---
+3. Synth CDK App (optional but good as a finally test for errors) by running `cdk synth <pipeline-or-stage-name>`.
+   * for example: `cdk synth nextjs-serverless-starter-staging-pipeline`
+   * this will generate the cloudformation template to use when the app is deployed.
+---
+4. Deploy CDK App by running `cdk deploy <pipeline-or-stage-name>`
+   * for example: `cdk deploy nextjs-serverless-starter-staging-pipeline`
+   * You will need to manually confirm to continue the deployment.
+   * This will deploy the app to AWS via cloudformation.
+---
