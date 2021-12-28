@@ -240,14 +240,36 @@ Below are explanations for each script you'll find in the `package.json`.
 # Testing
 
 
-This starter already has [Jest](https://jestjs.io/docs/) configured to use with  [NextJs](https://nextjs.org/docs/testing#setting-up-jest-with-the-rust-compiler). Simply run `yarn test` to execute the test file sin the `test/` directory.
+This starter already has [Jest](https://jestjs.io/docs/) configured to use with  [NextJs](https://nextjs.org/docs/testing#setting-up-jest-with-the-rust-compiler). Run `yarn test` to execute the test files in the `test/` directory.
 
-One simple [snapshot](https://jestjs.io/docs/snapshot-testing) test is configured by default, you can easily add more tests based on your apps specifications.
+One simple [snapshot](https://jestjs.io/docs/snapshot-testing) test is configured by default, you can easily add more tests based on your apps specifications. This test will render the Home component and compare it against the saved snapshot.
+
+```js
+describe('Render Index Home Correctly', () => {
+    let component: RenderResult;
+    beforeEach(() => {
+        component = render(<Home />, {});
+    });
+
+    it('should render the home page correctly', () => {
+        expect(component).toMatchSnapshot();
+    });
+});
+```
+>**Note**: Snapshot files are stored in `<root>/test/jest/__snapshots__` and should not be modified directly.
 
 Jest configuration options are set in `jest.config.js` in the root project directory. 
 
+>* [Jest Framework Documentation](https://jestjs.io/docs/getting-started)
+>* [Using Jest With NextJs](https://nextjs.org/docs/testing#creating-your-tests)
+>* [Adding Cypress e2e testing](https://nextjs.org/docs/testing#cypress)
+
+---
+
 
 # Linting
+
+
 
 
 
