@@ -8,7 +8,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - [Package Json Scripts](#package-json-scripts)
 - [Testing](#testing)
 - [Linting](#linting)
-- [Git Hooks](#gitHooks)
+- [Git Hooks](#git-hooks)
 - [Deployment](#deployment)
 
 ---
