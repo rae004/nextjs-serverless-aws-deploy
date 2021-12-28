@@ -304,5 +304,12 @@ ESLint configuration options are set in `.eslintrc.json`.
 ### ([top](#nextjs-aws-serverless-deploy))
 
 
+This starter comes with Git Hooks already configured using [Husky](https://www.npmjs.com/package/husky) package.
+
+> pre-commit: `yarn run test-all`
+
+> pre-push: `yarn run type-check`
+
+
 # Deployment
 ### ([top](#nextjs-aws-serverless-deploy))
