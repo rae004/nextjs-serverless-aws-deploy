@@ -318,3 +318,5 @@ See documentation for [Creating additional Git Hooks](https://typicode.github.io
 
 # Deployment
 ### ([top](#nextjs-aws-serverless-deploy))
+
+The AWS CDK allows you to deploy infrastructure as code. This starter deploys a NextJs application to AWS Lambda and S3, utilizing the Serverless NextJs CDK Construct. This does require an AWS account. You will also need to install and configure the AWS CLI in order to create the CI/CD Pipeline for the first time.
