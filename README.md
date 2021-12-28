@@ -15,7 +15,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 
 # Description
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
 
 
 This Next Js starter repo is configured with:
@@ -31,7 +31,7 @@ This Next Js starter repo is configured with:
 
 
 # Installation
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
 
 
 First, install required packages:
@@ -70,7 +70,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 
 # Env Example
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
 
 
 The AWS CDK deployment depends on variables set in the `.env` file. Below are the required variables and example usages.
@@ -119,7 +119,7 @@ STAGING_DOMAIN_ZONE_NAME=mydomain.com
 
 
 # Package Json Scripts
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
 
 
 This starter comes with predefined scripts intended to make life easier on the developer.
@@ -242,7 +242,7 @@ Below are explanations for each script you'll find in the `package.json`.
 
 
 # Testing
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
 
 
 This starter already has [Jest](https://jestjs.io/docs/) configured to use with  [NextJs](https://nextjs.org/docs/testing#setting-up-jest-with-the-rust-compiler). Run `yarn test` to execute the test files in the `test/` directory.
@@ -273,7 +273,7 @@ Jest configuration options are set in `jest.config.js` in the root project direc
 
 
 # Linting
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
 
 
 NextJs create app helper install ESLint by default. This starter extends  default settings, adds additional settings, plus configures the ESLint Prettier plugin for code styling.
@@ -301,8 +301,8 @@ ESLint configuration options are set in `.eslintrc.json`.
 
 
 # Git Hooks
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
 
 
 # Deployment
-###([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy))
