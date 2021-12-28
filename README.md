@@ -13,7 +13,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ---
 
+
 # Description
+
 
 This Next Js starter repo is configured with:
 * [NextJs 12](https://nextjs.org/blog/next-12) (using swc Minify)
@@ -26,7 +28,9 @@ This Next Js starter repo is configured with:
 
 ---
 
+
 # Installation
+
 
 First, install required packages:
 
@@ -62,8 +66,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ---
 
+
 # Env Example
-The AWS CDK deployment depends on variables set in the `.env` file. Below are the required variable and example usages.
+
+
+The AWS CDK deployment depends on variables set in the `.env` file. Below are the required variables and example usages.
 
 **These values are examples and should _NOT_ be used and will _NOT WORK_ in your deployed app**
 ```dotenv
@@ -84,7 +91,7 @@ STAGING_REPO_STRING=myUser/someRepoOfMine
 STAGING_SOURCE_BRANCH=develop
 ```
 
-The next set of variables are optional. Not setting the domain variables will mean your app will only be available at the Secure CloudFront Url created automatically, for example: `http://d111111abcdef8.cloudfront.net/index.html`. You can then attach that value to a DNS record manually. Either in AWS or with another Registrar.
+The next set of variables are optional. Not setting the domain variables will mean your app will only be available at the Secure CloudFront Url created automatically, for example: `http://d111111abcdef8.cloudfront.net`. You can then attach that value to a DNS record manually. Either in AWS or with another Registrar.
 
 ```dotenv
 # Custom Domain name for Staging infrastructure. This will be used to create an A record in Route 53.
@@ -107,7 +114,9 @@ STAGING_DOMAIN_ZONE_NAME=mydomain.com
 
 ---
 
+
 # Package Json Scripts
+
 
 This starter comes with predefined scripts intended to make life easier on the developer.
 Each script is defined in the `package.json` and can be executed by `yarn`.
@@ -117,130 +126,131 @@ For example running `yarn format` will reformat your code per the ESlint setting
 Below are explanations for each script you'll find in the `package.json`.
 
 #### Start development build of next js
-```json
-{
-  "dev": "next dev"
-}
-```
-Start a local/development build of your app. Useful while developing your application.
+>```json
+>  "dev": "next dev"
+>```
+>Start a local/development build of your app. Useful while developing your application.
 
 #### Create Production Build
-**_This will not be used when deployed, see [Deployment](#deployment) section for more details._**
-
-**_Helpful when testing issues with the CI/CD Pipeline_**
-```json
-{
-  "build": "next build"
-}
-```
-Create a standard NextJs build, see [Deployment](#deployment) section for more details.
+>**_This will not be used when deployed, see [Deployment](#deployment) section for more details._**
+>
+>**_Helpful when testing issues with the CI/CD Pipeline_**
+>```json
+>  "build": "next build"
+>```
+>Create a standard NextJs build, see [CLI build](https://nextjs.org/docs/api-reference/cli#build) for more details.
 
 #### Start production Build
-```json
-{
-  "start": "next start"
-}
-```
-Start a production build compiled by running `yarn build`.
+>```json
+>  "start": "next start"
+>```
+>Start a production build compiled by running `yarn build`.
 
 #### Test Compiling Typescript
-```json
-{
-  "type-check": "tsc --pretty --noEmit"
-}
-```
-Compile the project code using [Typescript Compiler (TSC)](https://www.typescriptlang.org/docs/handbook/compiler-options.html), but **_do not_** make any changes to the code. Uses configuration options in `tsconfig.json`.
+>```json
+>  "type-check": "tsc --pretty --noEmit"
+>```
+>Compile the project code using [Typescript Compiler (TSC)](https://www.typescriptlang.org/docs/handbook/compiler-options.html), but **_do not_** make any changes to the code. Uses configuration options in `tsconfig.json`.
 
 #### Check Linting per ESLint
-```json
-{
-  "lint": "next lint"
-}
-```
-Only check for potential changes based on settings in `eslint.json` & `eslintignore`. See the [Linting](#linting) section for more details.
+>```json
+>  "lint": "next lint"
+>```
+>Only check for potential changes based on settings in `eslint.json` & `eslintignore`. See the [Linting](#linting) section for more details.
 
 #### Reformat code per ESLint
-```json
-  "format": "next lint --fix"
-```
-Reformat the project code based on settings in `eslint.json` & `eslintignore`. See the [Linting](#linting) section for more details.
+>```json
+>  "format": "next lint --fix"
+>```
+>Reformat the project code based on settings in `eslint.json` & `eslintignore`. See the [Linting](#linting) section for more details.
 
 #### Run Jest Tests
-```json
-  "test": "jest"
-```
-Execute the Jest tests defined in `test/` directory. See the [Testing](#testing) section for more details.
+>```json
+>  "test": "jest"
+>```
+>Execute the Jest tests defined in `test/` directory. See the [Testing](#testing) section for more details.
 
 #### Update Jest Snapshots
-```json
-  "test-update": "jest --update-snapshot"
-```
-Update the Jest Snapshot test files used for comparison. See the [Testing](#testing) section for more details.
-
+>```json
+>  "test-update": "jest --update-snapshot"
+>```
+>Update the Jest Snapshot test files used for comparison. See the [Testing](#testing) section for more details.
 
 #### Run Jest Coverage Tests
-```json
-  "test-coverage": "jest --coverage"
-```
-See [Jest CLI coverage Flage](https://jestjs.io/docs/cli#--coverageboolean) for more details.
+>```json
+>  "test-coverage": "jest --coverage"
+>```
+>See [Jest CLI coverage Flage](https://jestjs.io/docs/cli#--coverageboolean) for more details.
 
 #### Check Linting, Types, & run all Jest Tests.
-```json
-  "test-all": "yarn lint && yarn type-check && yarn test"
-```
-Runs all Tests  for ESLint, TSC, and Jest. See [Linting](#Linting), [TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html), [Testing](#testing) for more details
+>```json
+>  "test-all": "yarn lint && yarn type-check && yarn test"
+>```
+>Runs all Tests  for ESLint, TSC, and Jest. See [Linting](#Linting), [TSC](https://www.typescriptlang.org/docs/handbook/compiler-options.html), [Testing](#testing) for more details
+
 #### Install Husky Git Hooks
-This should only be used when setting up the project for the first time.
-```json
-  "prepare": "husky install"
-```
-See the [Git Hooks](#git-hooks) section for more details.
+>This should only be used when setting up the project for the first time.
+>```json
+>  "prepare": "husky install"
+>```
+>See the [Git Hooks](#git-hooks) section for more details.
 
 #### Aws Cdk Deployments
-Read [Deployment](#deployment) section before using these commands.
-```json
-  "cdk": "cdk",
-  "deploy": "ts-node deploy/bin.ts"
-```
-Executing `yarn cdk ls` will build your app per the CDK specifications setup in the `deploy/` directory and list **Stack Names** once complete. Example output:
-```shell
-info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env.local
-info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env
-info  - Checking validity of types...
-info  - Creating an optimized production build...
-info  - Compiled successfully
-info  - Collecting page data...
-info  - Generating static pages (0/3)
-info  - Generating static pages (3/3)
-info  - Finalizing page optimization...
+>Read [Deployment](#deployment) section before using these commands.
+>```json
+>  "cdk": "cdk",
+>  "deploy": "ts-node deploy/bin.ts"
+>```
+>Executing `yarn cdk ls` will build your app per the CDK specifications setup in the `deploy/` directory and list **Stack Names** once complete. Example output:
+>```shell
+>info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env.local
+>info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env
+>info  - Checking validity of types...
+>info  - Creating an optimized production build...
+>info  - Compiled successfully
+>info  - Collecting page data...
+>info  - Generating static pages (0/3)
+>info  - Generating static pages (3/3)
+>info  - Finalizing page optimization...
+>
+>Page                                       Size     First Load JS
+>┌ ○ /                                      5.04 kB        76.7 kB
+>├   └ css/b282b959608f58d4.css             718 B
+>├   /_app                                  0 B            71.7 kB
+>├ ○ /404                                   180 B          71.8 kB
+>└ λ /api/hello                             0 B            71.7 kB
+>+ First Load JS shared by all              71.7 kB
+>  ├ chunks/framework-3ccec772d1fa8b6b.js   42.1 kB
+>  ├ chunks/main-404bdd3acbdd01ab.js        28.3 kB
+>  ├ chunks/pages/_app-fc81d34f352835e7.js  496 B
+>  ├ chunks/webpack-27593bf8d60abcde.js     757 B
+>  └ css/2974ebc8daa97b04.css               209 B
+>
+>λ  (Lambda)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
+>○  (Static)  automatically rendered as static HTML (uses no initial props)
+>
+>Done in 17.03s.
+>nextjs-serverless-starter-staging-pipeline
+>nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js
+>```
+>
+>See the [Deployment](#Deployment) section for more details.
 
-Page                                       Size     First Load JS
-┌ ○ /                                      5.04 kB        76.7 kB
-├   └ css/b282b959608f58d4.css             718 B
-├   /_app                                  0 B            71.7 kB
-├ ○ /404                                   180 B          71.8 kB
-└ λ /api/hello                             0 B            71.7 kB
-+ First Load JS shared by all              71.7 kB
-  ├ chunks/framework-3ccec772d1fa8b6b.js   42.1 kB
-  ├ chunks/main-404bdd3acbdd01ab.js        28.3 kB
-  ├ chunks/pages/_app-fc81d34f352835e7.js  496 B
-  ├ chunks/webpack-27593bf8d60abcde.js     757 B
-  └ css/2974ebc8daa97b04.css               209 B
-
-λ  (Lambda)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
-○  (Static)  automatically rendered as static HTML (uses no initial props)
-
-Done in 17.03s.
-nextjs-serverless-starter-staging-pipeline
-nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js
-```
-
-See the [Deployment](#Deployment) section for more details.
 
 # Testing
 
 
+This starter already has [Jest](https://jestjs.io/docs/) configured to use with  [NextJs](https://nextjs.org/docs/testing#setting-up-jest-with-the-rust-compiler). Simply run `yarn test` to execute the test file sin the `test/` directory.
+
+One simple [snapshot](https://jestjs.io/docs/snapshot-testing) test is configured by default, you can easily add more tests based on your apps specifications.
+
+Jest configuration options are set in `jest.config.js` in the root project directory. 
+
+
 # Linting
+
+
+
 
 
 # Git Hooks
