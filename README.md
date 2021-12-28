@@ -245,7 +245,7 @@ Below are explanations for each script you'll find in the `package.json`.
 ### ([top](#nextjs-aws-serverless-deploy))
 
 
-This starter already has [Jest](https://jestjs.io/docs/) configured to use with  [NextJs](https://nextjs.org/docs/testing#setting-up-jest-with-the-rust-compiler). Run `yarn test` to execute the test files in the `test/` directory.
+This starter already has [Jest](https://jestjs.io/docs/getting-started) configured to use with  [NextJs](https://nextjs.org/docs/testing#setting-up-jest-with-the-rust-compiler). Run `yarn test` to execute the test files in the `test/` directory.
 
 One simple [snapshot](https://jestjs.io/docs/snapshot-testing) test is configured by default, you can easily add more tests based on your apps specifications. This test will render the Home component and compare it against the saved snapshot.
 
@@ -369,21 +369,47 @@ AWS Cdk command can be called directly, for example using `cdk ls` will list all
 > nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js
 > ```
 
+### Setting CDK App Context
+This CDK Deployment relies on the [context property](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.AppProps.html#context) from [interface AppProps](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.AppProps.html), implemented in `<root>/deploy/bin.ts`.
+```js
+// // Create CDK app instance test update
+   const app = new App({
+      context: {
+          appName: 'nextjs-serverless-starter',
+          appAbbr: 'rae-dev-next-js',
+          account: `${process.env.AWS_ACCOUNT_ID}`,
+          region: `${process.env.AWS_REGION_DEFAULT}`,
+          projectTag: 'Rae Dev Starters',
+          appNameTag: 'NextJs Serverless',
+          appVersionTag: `${version}`,
+          stagingEnvTag: 'staging',
+          productionEnvTag: 'production',
+          appResources: appEnvironmentResources,
+      },
+   });
+```
+Context values can be read from any construct in the CDK App using `node.getContext(key)`. 
+```js
+    const appName = this.node.tryGetContext('appName');
+```
+These values are used throughout the CDK Deployment to ensure naming and tagging are consistent in AWS.
+
 ### Deploy Staging CI/CD Pipeline (first time)
 
 1. Push all changes you intend to deploy to the branch set as `STAGING_SOURCE_BRANCH` in `.env`.
 ---
 2. Find Staging pipeline name by running `cdk ls`, example name: `nextjs-serverless-starter-staging-pipeline`
     * Make sure to use the pipeline name, using the stage name will result in the app being deployed without a CI/CD pipeline. The pipeline name will **_not_** have any slashes, just hyphens.
-      * pipeline name: `nextjs-serverless-starter-staging-pipeline`
-      * stage name: `nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js`
+      * Pipeline name: `nextjs-serverless-starter-staging-pipeline`
+      * Stage name: `nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js`
 ---
 3. Synth CDK App (optional but good as a finally test for errors) by running `cdk synth <pipeline-or-stage-name>`.
-   * for example: `cdk synth nextjs-serverless-starter-staging-pipeline`
-   * this will generate the cloudformation template to use when the app is deployed.
+   * For example: `cdk synth nextjs-serverless-starter-staging-pipeline`
+   * This will generate the cloudformation template to use when the app is deployed.
 ---
 4. Deploy CDK App by running `cdk deploy <pipeline-or-stage-name>`
-   * for example: `cdk deploy nextjs-serverless-starter-staging-pipeline`
+   * For example: `cdk deploy nextjs-serverless-starter-staging-pipeline`
    * You will need to manually confirm to continue the deployment.
    * This will deploy the app to AWS via cloudformation.
 ---
+5. Once the CLI is complete you will see the Pipeline running and be able to track progress by searching for the appName set in the [CDK App Context](#setting-cdk-app-context) from the [AWS Code Pipeline Console](https://console.aws.amazon.com/codesuite/codepipeline/pipelines)
