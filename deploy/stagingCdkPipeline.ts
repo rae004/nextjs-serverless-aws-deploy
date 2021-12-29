@@ -57,14 +57,15 @@ class nextjsServerlessStagingPipeline extends Stack {
                 awsContextTags,
             }),
             {
-                post: [
-                    new ShellStep('validate-staging-cloudfront-url', {
-                        commands: [
-                            `API_HANDLER_DOMAIN=https://${stagingResourceSettings.domain}`,
-                            'curl -Ssf $API_HANDLER_DOMAIN',
-                        ],
-                    }),
-                ],
+                //todo get cloudfront URL from AppStage for validation. Check/validate custom domain if set.
+                // post: [
+                //     new ShellStep('validate-staging-cloudfront-url', {
+                //         commands: [
+                //             `API_HANDLER_DOMAIN=https://${stagingResourceSettings.domain}`,
+                //             'curl -Ssf $API_HANDLER_DOMAIN',
+                //         ],
+                //     }),
+                // ],
             },
         );
     }
