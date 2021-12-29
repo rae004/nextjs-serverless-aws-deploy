@@ -23,7 +23,7 @@ const appEnvironmentResources = {
         domainZoneName: 'rae-dev.com',
     },
     stagingResourceSettings: {
-        sourceRepoConnectionArn: `${process.env.AWS_GITHUB_CONNECTION_ARN}`,
+        sourceRepoConnectionArn: `${process.env.AWS_REPO_SOURCE_CONNECTION_ARN}`,
         stagingRepoString: `${process.env.STAGING_REPO_STRING}`,
         stagingSourceBranch: `${process.env.STAGING_SOURCE_BRANCH}`,
         lambda: { memoryLimitMiB: 512 },
