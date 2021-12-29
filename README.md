@@ -38,7 +38,10 @@ It uses the same [Boilerplate Code](https://github.com/vercel/next.js/blob/canar
 > **Note**: It is important to use `yarn` version 1.22.* to install dependencies because of the `yarn.lock` file. Using npm would likely result in errors.
 >
 > [_Installing Yarn_](https://classic.yarnpkg.com/lang/en/docs/install/#install-via-npm)
-1. Run the Create Next App utility with this projects GitHub url: `yarn create next-app --ts -e https://github.com/rae004/nextjs-serverless-aws-deploy`
+1. Run the Create Next App utility with this projects GitHub url:
+```shell
+yarn create next-app --ts -e https://github.com/rae004/nextjs-serverless-aws-deploy
+```
 ---
 2. Follow the interactive experience that guides you through setting up a project.
 ```shell
@@ -137,7 +140,7 @@ The next set of variables are optional. Not setting the domain variables will me
 ```dotenv
 # Custom Domain name for Staging infrastructure. This will be used to create an A record in Route 53.
 # You must have an existing hosted zone setup, see below for details.
-STAGING_DOMAIN=staging.rea-dev.com
+STAGING_DOMAIN=staging.rae-dev.com
 ```
 Requesting a Public Cert with AWS: https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
 ```dotenv
@@ -150,7 +153,7 @@ Creating a Hosted Zone in AWS: https://docs.aws.amazon.com/Route53/latest/Develo
 STAGING_HOSTED_ZONE_ID=SHETE57DONT9DWERK6U
 
 # AWS Route 53 Host Zone Name, will most likly be your domain name, without any subdomain.
-STAGING_DOMAIN_ZONE_NAME=mydomain.com
+STAGING_DOMAIN_ZONE_NAME=rae-dev.com
 ```
 
 ---
