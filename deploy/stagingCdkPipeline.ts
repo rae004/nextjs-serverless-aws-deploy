@@ -47,6 +47,20 @@ class nextjsServerlessStagingPipeline extends Stack {
             }),
         });
 
+        let validateStaging = {};
+        if (stagingResourceSettings.domain) {
+            validateStaging = {
+                post: [
+                    new ShellStep('validate-staging-cloudfront-url', {
+                        commands: [
+                            `API_HANDLER_DOMAIN=https://${stagingResourceSettings.domain}`,
+                            'curl -Ssf $API_HANDLER_DOMAIN',
+                        ],
+                    }),
+                ],
+            };
+        }
+
         // build staging infrastructure
         pipeline.addStage(
             new nextjsAppStage(this, `staging`, {
@@ -56,17 +70,8 @@ class nextjsServerlessStagingPipeline extends Stack {
                 appAbbr,
                 awsContextTags,
             }),
-            {
-                //todo get cloudfront URL from AppStage for validation. Check/validate custom domain if set.
-                // post: [
-                //     new ShellStep('validate-staging-cloudfront-url', {
-                //         commands: [
-                //             `API_HANDLER_DOMAIN=https://${stagingResourceSettings.domain}`,
-                //             'curl -Ssf $API_HANDLER_DOMAIN',
-                //         ],
-                //     }),
-                // ],
-            },
+            //todo get cloudfront URL from AppStage for validation. Check/validate custom domain if set.
+            validateStaging,
         );
     }
 }
