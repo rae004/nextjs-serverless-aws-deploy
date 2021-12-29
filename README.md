@@ -33,21 +33,37 @@ This Next Js starter repo is configured with:
 # Installation
 ### ([top](#nextjs-aws-serverless-deploy))
 
-
-First, install required packages:
-
+1. Make new project directory.
 ```shell
 mkdir my-new-nextjs-app && cd my-new-nextjs-app
 ```
-
-
+2. Setup new git repo for project.
+```shell
+git init
+```
+3. Pull NextJs Serverless Starter code into your new directory.
+```shell
+git pull git@github.com:rae004/nextjs-serverless-aws-deploy.git
+```
+4. Install packages and dependencies.
 ```shell
 yarn install
 ```
-
 > **Note**: It is important to use `yarn` version 1.22.* to install dependencies because of the `yarn.lock` file. Using npm would likely result in errors.
 >
 > [_Installing Yarn_](https://classic.yarnpkg.com/lang/en/docs/install/#install-via-npm)
+5. Next [Create](https://docs.github.com/en/get-started/quickstart/create-a-repo) a new [Private Github Repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility) for the App.
+> **_Important Note_**: Make sure you use a **_private_** repository for your App since the `.env` file is committed and used during the build process. 
+6. Push the `master` branch to remote.
+```shell
+git add . && git commit -m "initial commit" && git push --set-upstream origin master
+```
+7. Now create a `develop` branch and push to the remote repository.
+```shell
+git branch develop && git push --set-upstream origin develop
+```
+8. Set Environment Variables described in [Env Example](#env-example) section.
+   * Required for AWS CDK Deployment
 
 ### Starting Dev server
 ```bash
@@ -408,7 +424,7 @@ These values are used throughout the CDK Deployment to ensure naming and tagging
       * Pipeline name: `nextjs-serverless-starter-staging-pipeline`
       * Stage name: `nextjs-serverless-starter-staging-pipeline/staging/serverless-rae-dev-next-js`
 ---
-3. Synth CDK App (optional but good as a finally test for errors) by running `cdk synth <pipeline-or-stage-name>`.
+3. Synth CDK App by running `cdk synth <pipeline-or-stage-name>` (optional but good as a finally test for errors).
    * For example: `cdk synth nextjs-serverless-starter-staging-pipeline`
    * This will generate the cloudformation template to use when the app is deployed.
 ---
