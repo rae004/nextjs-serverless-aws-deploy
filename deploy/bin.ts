@@ -4,6 +4,7 @@ import { App } from '@aws-cdk/core';
 import { Builder } from '@sls-next/lambda-at-edge';
 import { version } from '../package.json';
 import { nextjsServerlessStagingPipeline } from './stagingCdkPipeline';
+import { nextjsServerlessProductionPipeline } from './productionCdkPipeline';
 
 const envPath = '.env';
 const localEnvPath = '.env.local';
@@ -17,16 +18,19 @@ if (fs.existsSync(`${localEnvPath}`)) {
 const appEnvironmentResources = {
     productionResourceSettings: {
         lambda: { memoryLimitMiB: 1024 },
-        domain: '*.rae-dev.com',
-        domainSslCertArn: '',
-        domainHostedZoneId: '',
-        domainZoneName: 'rae-dev.com',
+        sourceRepoConnectionArn: process.env.AWS_GITHUB_CONNECTION_ARN,
+        stagingRepoString: process.env.PRODUCTION_REPO_STRING,
+        stagingSourceBranch: process.env.PRODUCTION_SOURCE_BRANCH,
+        domain: process.env.PRODUCTION_DOMAIN,
+        domainSslCertArn: process.env.PRODUCTION_DOMAIN_SSL_CERT_ARN,
+        domainHostedZoneId: process.env.PRODUCTION_HOSTED_ZONE_ID,
+        domainZoneName: process.env.PRODUCTION_DOMAIN_ZONE_NAME,
     },
     stagingResourceSettings: {
+        lambda: { memoryLimitMiB: 512 },
         sourceRepoConnectionArn: process.env.AWS_GITHUB_CONNECTION_ARN,
         stagingRepoString: process.env.STAGING_REPO_STRING,
         stagingSourceBranch: process.env.STAGING_SOURCE_BRANCH,
-        lambda: { memoryLimitMiB: 512 },
         domain: process.env.STAGING_DOMAIN,
         domainSslCertArn: process.env.STAGING_DOMAIN_SSL_CERT_ARN,
         domainHostedZoneId: process.env.STAGING_HOSTED_ZONE_ID,
@@ -37,14 +41,14 @@ const appEnvironmentResources = {
 
 (async () => {
     try {
-        // // Build production app directory, per Lambda at Edge Specs
-        // const builderProd = new Builder('.', './build-production', {
-        //     env: {
-        //         NODE_ENV: 'production',
-        //     },
-        //     args: ['build'],
-        // });
-        // await builderProd.build(true);
+        // Build production app directory, per Lambda at Edge Specs
+        const builderProd = new Builder('.', './build-production', {
+            env: {
+                NODE_ENV: 'production',
+            },
+            args: ['build'],
+        });
+        await builderProd.build(true);
 
         //Build development app directory, per Lambda at Edge Specs
         const builderStaging = new Builder('.', './build-staging', {
@@ -73,7 +77,7 @@ const appEnvironmentResources = {
 
         const appName = app.node.tryGetContext('appName');
         const stagingEnvTag = app.node.tryGetContext('stagingEnvTag');
-        // const productionEnvTag = app.node.tryGetContext('productionEnvTag');
+        const productionEnvTag = app.node.tryGetContext('productionEnvTag');
         const awsContextTags = {
             Project: app.node.tryGetContext('projectTag'),
             AppVersion: app.node.tryGetContext('appVersionTag'),
@@ -97,22 +101,22 @@ const appEnvironmentResources = {
             },
         );
 
-        // Create production CDK pipeline instance
-        // new CmAppEngineProductionPipeline(
-        //     app,
-        //     `${appName}-production-pipeline`,
-        //     {
-        //         env: {
-        //             region: 'us-east-1',
-        //         },
-        //         analyticsReporting: true,
-        //         description: `Deployment of ${productionEnvTag} ${appName} NextJS using Serverless CDK Construct`,
-        //         tags: {
-        //             Environment: productionEnvTag,
-        //             ...awsContextTags,
-        //         },
-        //     },
-        // );
+        // // Create production CDK pipeline instance
+        new nextjsServerlessProductionPipeline(
+            app,
+            `${appName}-production-pipeline`,
+            {
+                env: {
+                    region: 'us-east-1',
+                },
+                analyticsReporting: true,
+                description: `Deployment of ${productionEnvTag} ${appName} NextJS using Serverless CDK Construct`,
+                tags: {
+                    Environment: productionEnvTag,
+                    ...awsContextTags,
+                },
+            },
+        );
     } catch (e) {
         console.error(e);
         process.exit(1);
