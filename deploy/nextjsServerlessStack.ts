@@ -28,6 +28,7 @@ export class NextStack extends Stack {
             props.resources.domainZoneName &&
             props.resources.domain
         ) {
+            console.log('we made it here!');
             ourHostedZone = HostedZone.fromHostedZoneAttributes(
                 this,
                 'hosted-zone',
