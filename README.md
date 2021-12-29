@@ -35,40 +35,51 @@ It uses the same [Boilerplate Code](https://github.com/vercel/next.js/blob/canar
 # Installation
 ### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
-1. Make new project directory.
-```shell
-mkdir my-new-nextjs-app && cd my-new-nextjs-app
-```
-2. Setup new git repo for project.
-```shell
-git init
-```
-3. Pull NextJs Serverless Starter code into your new directory.
-```shell
-git pull git@github.com:rae004/nextjs-serverless-aws-deploy.git
-```
-4. Install packages and dependencies.
-```shell
-yarn install
-```
 > **Note**: It is important to use `yarn` version 1.22.* to install dependencies because of the `yarn.lock` file. Using npm would likely result in errors.
 >
 > [_Installing Yarn_](https://classic.yarnpkg.com/lang/en/docs/install/#install-via-npm)
-5. Next [Create](https://docs.github.com/en/get-started/quickstart/create-a-repo) a new [Private Github Repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility) for the App.
+1. Run the Create Next App utility with this projects GitHub url: `yarn create next-app --ts -e https://github.com/rae004/nextjs-serverless-aws-deploy`
+---
+2. Follow the interactive experience that guides you through setting up a project.
+```shell
+yarn create v1.22.15
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@2.3.2: The platform "linux" is incompatible with this module.
+info "fsevents@2.3.2" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Installed "create-next-app@12.0.7" with binaries:
+      - create-next-app
+✔ What is your project named? … test-aws-deploy
+Creating a new Next.js app in /home/rae004/projects/test-aws-deploy.
+
+Downloading files from repo https://github.com/rae004/nextjs-serverless-aws-deploy. This might take a moment.
+
+Installing packages. This might take a couple of minutes.
+
+```
+---
+3. Next [Create](https://docs.github.com/en/get-started/quickstart/create-a-repo) a new [Private Github Repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility) for the App.
+   * Required for AWS CDK Deployment
 > **_Important Note_**: Make sure you use a **_private_** repository for your App since the `.env` file is committed and used during the build process.
-6. Add git remote to new repo, replace the git@github.com portion.
+---
+4. Add the new remote repo.
+   * Replace placeholder text after git@github.com with your info.
 ```shell
-git remote add origin git@github.com:meTheUser/my-awesome-app
+git remote add origin git@github.com:<USER>/<REPO>
 ```
-8. Push the `master` branch to remote.
+---
+5. Push the `main` branch to remote.
 ```shell
-git push --set-upstream origin master
+git push --set-upstream origin main
 ```
-7. Now create a `develop` branch and push to the remote repository.
+---
+6. Now create a development branch for staging infrastructure and push to the remote repository.
 ```shell
 git branch develop && git push --set-upstream origin develop
 ```
-8. Set Environment Variables described in [Env Example](#env-example) section.
+7. Set Environment Variables described in [Env Example](#env-example) section.
    * Required for AWS CDK Deployment
 
 ### Starting Dev server
