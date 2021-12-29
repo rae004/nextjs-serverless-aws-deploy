@@ -135,7 +135,7 @@ STAGING_REPO_STRING=myUser/someRepoOfMine
 STAGING_SOURCE_BRANCH=develop
 ```
 
-The next set of variables are optional. Not setting the domain variables will mean your app will only be available at the Secure CloudFront Url created automatically, for example: `http://d111111abcdef8.cloudfront.net`. You can then attach that value to a DNS record manually. Either in AWS or with another Registrar.
+The next set of variables are optional. Not setting the domain variables will mean your app will only be available at the Secure CloudFront Url created automatically during deployment, for example: `http://d111111abcdef8.cloudfront.net`. You can then attach that value to a DNS record manually. Either in AWS or with another Registrar.
 
 ```dotenv
 # Custom Domain name for Staging infrastructure. This will be used to create an A record in Route 53.
@@ -372,7 +372,7 @@ The AWS CDK allows you to deploy infrastructure as code. This starter deploys a 
 > **_Note_**: This Starter is setup to use AWS CDK v1, installing v2 will result in errors.
 
 ### Using CDK Cli
-AWS Cdk command can be called directly, for example using `cdk ls` will list all Stacks in the cdk app.
+AWS Cdk commands can be called directly, for example using `cdk ls` will build and then list all Stacks in the cdk app.
 
 >**Get Stack Names**
 >
@@ -412,7 +412,7 @@ AWS Cdk command can be called directly, for example using `cdk ls` will list all
 > ```
 
 ### Setting CDK App Context
-This CDK Deployment relies on the [context property](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.AppProps.html#context) from [interface AppProps](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.AppProps.html), implemented in `<root>/deploy/bin.ts`.
+This CDK Deployment relies on the [context property](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.AppProps.html#context) from interface AppProps, implemented in `<root>/deploy/bin.ts`.
 ```js
 // // Create CDK app instance test update
    const app = new App({
