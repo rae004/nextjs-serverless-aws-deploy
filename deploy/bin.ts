@@ -23,7 +23,7 @@ const appEnvironmentResources = {
         domainZoneName: 'rae-dev.com',
     },
     stagingResourceSettings: {
-        sourceRepoConnectionArn: `${process.env.AWS_REPO_SOURCE_CONNECTION_ARN}`,
+        sourceRepoConnectionArn: `${process.env.AWS_GITHUB_CONNECTION_ARN}`,
         stagingRepoString: `${process.env.STAGING_REPO_STRING}`,
         stagingSourceBranch: `${process.env.STAGING_SOURCE_BRANCH}`,
         lambda: { memoryLimitMiB: 512 },
@@ -37,14 +37,14 @@ const appEnvironmentResources = {
 
 (async () => {
     try {
-        // Build production app directory, per Lambda at Edge Specs
-        const builderProd = new Builder('.', './build-production', {
-            env: {
-                NODE_ENV: 'production',
-            },
-            args: ['build'],
-        });
-        await builderProd.build(true);
+        // // Build production app directory, per Lambda at Edge Specs
+        // const builderProd = new Builder('.', './build-production', {
+        //     env: {
+        //         NODE_ENV: 'production',
+        //     },
+        //     args: ['build'],
+        // });
+        // await builderProd.build(true);
 
         //Build development app directory, per Lambda at Edge Specs
         const builderStaging = new Builder('.', './build-staging', {

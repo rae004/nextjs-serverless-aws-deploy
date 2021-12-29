@@ -289,6 +289,7 @@ describe('Render Index Home Correctly', () => {
 });
 ```
 >**Note**: Snapshot files are stored in `<root>/test/jest/__snapshots__` and should not be modified directly.
+> Run `yarn test-update` when you need to update test snapshots.
 
 Jest configuration options are set in `jest.config.js` in the root project directory. 
 
