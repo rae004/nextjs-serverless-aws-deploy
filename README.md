@@ -1,5 +1,5 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app --typescript`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-# NextJs Aws Serverless Deploy
+# NextJs Aws Serverless Deploy Starter Project
 
 ---
 - [Description](#description)
@@ -27,6 +27,8 @@ This Next Js starter repo is configured with:
 * [AWS CDK CI/CD Pipeline](https://docs.aws.amazon.com/cdk/v1/guide/cdk_pipeline.html) (Infrastructure as code).
 * [Serverless NextJs CDK Construct](https://serverless-nextjs.com/docs/cdkconstruct/) (experimental)
 
+It uses the same [Boilerplate Code](https://github.com/vercel/next.js/blob/canary/docs/basic-features/typescript.md) as if you ran `yarn create next-app --typescript`. It's intended to give a developer a jumping/starting off point for NextJs development with serverless deployment to AWS.
+
 ---
 
 
@@ -53,10 +55,14 @@ yarn install
 >
 > [_Installing Yarn_](https://classic.yarnpkg.com/lang/en/docs/install/#install-via-npm)
 5. Next [Create](https://docs.github.com/en/get-started/quickstart/create-a-repo) a new [Private Github Repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility) for the App.
-> **_Important Note_**: Make sure you use a **_private_** repository for your App since the `.env` file is committed and used during the build process. 
-6. Push the `master` branch to remote.
+> **_Important Note_**: Make sure you use a **_private_** repository for your App since the `.env` file is committed and used during the build process.
+6. Add git remote to new repo, replace the git@github.com portion.
 ```shell
-git add . && git commit -m "initial commit" && git push --set-upstream origin master
+git remote add origin git@github.com:meTheUser/my-awesome-app
+```
+8. Push the `master` branch to remote.
+```shell
+git push --set-upstream origin master
 ```
 7. Now create a `develop` branch and push to the remote repository.
 ```shell
@@ -226,7 +232,7 @@ Below are explanations for each script you'll find in the `package.json`.
 >  "cdk": "cdk",
 >  "deploy": "ts-node deploy/bin.ts"
 >```
->Executing `yarn cdk ls` will build your app per the CDK specifications setup in the `deploy/` directory and list **Stack Names** once complete. Example output:
+>Executing `cdk ls` will build your app per the CDK specifications setup in the `deploy/` directory and list **Stack Names** once complete. Example output:
 >```shell
 >info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env.local
 >info  - Loaded env from /home/rae004/projects/nextjs-serverless-deploy/.env
