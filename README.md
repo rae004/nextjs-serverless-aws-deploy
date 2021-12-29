@@ -15,7 +15,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 
 # Description
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 
 This Next Js starter repo is configured with:
@@ -33,7 +33,7 @@ It uses the same [Boilerplate Code](https://github.com/vercel/next.js/blob/canar
 
 
 # Installation
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 1. Make new project directory.
 ```shell
@@ -97,7 +97,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 
 # Env Example
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 
 The AWS CDK deployment depends on variables set in the `.env` file. Below are the required variables and example usages.
@@ -146,7 +146,7 @@ STAGING_DOMAIN_ZONE_NAME=mydomain.com
 
 
 # Package Json Scripts
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 
 This starter comes with predefined scripts intended to make life easier on the developer.
@@ -269,7 +269,7 @@ Below are explanations for each script you'll find in the `package.json`.
 
 
 # Testing
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 
 This starter already has [Jest](https://jestjs.io/docs/getting-started) configured to use with  [NextJs](https://nextjs.org/docs/testing#setting-up-jest-with-the-rust-compiler). Run `yarn test` to execute the test files in the `test/` directory.
@@ -289,6 +289,7 @@ describe('Render Index Home Correctly', () => {
 });
 ```
 >**Note**: Snapshot files are stored in `<root>/test/jest/__snapshots__` and should not be modified directly.
+> Run `yarn test-update` when you need to update test snapshots.
 
 Jest configuration options are set in `jest.config.js` in the root project directory. 
 
@@ -300,7 +301,7 @@ Jest configuration options are set in `jest.config.js` in the root project direc
 
 
 # Linting
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 
 NextJs create app helper install ESLint by default. This starter extends  default settings, adds additional settings, plus configures the ESLint Prettier plugin for code styling.
@@ -328,7 +329,7 @@ ESLint configuration options are set in `.eslintrc.json`.
 
 
 # Git Hooks
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 
 This starter comes with Git Hooks already configured using [Husky](https://www.npmjs.com/package/husky) package.
@@ -344,7 +345,7 @@ The `package.json` has a script called `prepare` intended to help [initialize Hu
 See documentation for [Creating additional Git Hooks](https://typicode.github.io/husky/#/?id=create-a-hook).
 
 # Deployment
-### ([top](#nextjs-aws-serverless-deploy))
+### ([top](#nextjs-aws-serverless-deploy-starter-project))
 
 The AWS CDK allows you to deploy infrastructure as code. This starter deploys a NextJs application to AWS Lambda and S3, utilizing the Serverless NextJs CDK Construct. This does require an AWS account. You will also need to install and configure the AWS CLI in order to create the CI/CD Pipeline for the first time.
 
