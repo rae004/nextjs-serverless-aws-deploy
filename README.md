@@ -38,9 +38,9 @@ It uses the same [Boilerplate Code](https://github.com/vercel/next.js/blob/canar
 > **Note**: It is important to use `yarn` version 1.22.* to install dependencies because of the `yarn.lock` file. Using npm would likely result in errors.
 >
 > [_Installing Yarn_](https://classic.yarnpkg.com/lang/en/docs/install/#install-via-npm)
-1. Run the Create Next App utility with this projects GitHub url and setup git hooks.
+1. Run the Create Next App utility with this projects GitHub url.
 ```shell
-yarn create next-app --ts -e https://github.com/rae004/nextjs-serverless-aws-deploy && yarn prepare
+yarn create next-app --ts -e https://github.com/rae004/nextjs-serverless-aws-deploy
 ```
 ---
 2. Follow the interactive experience that guides you through setting up a project.
@@ -71,7 +71,12 @@ Installing packages. This might take a couple of minutes.
 4. Add the new remote repo.
    * Replace placeholder text after git@github.com with your info.
 ```shell
-cd <your-new-app-directory> && git remote add origin git@github.com:<USER>/<REPO>
+cd <your-new-app-directory> && git remote add origin git@github.com:<USER>/<REPO> 
+```
+---
+5. Add Git Hooks.
+```shell
+yarn prepare
 ```
 ---
 5. Push the `main` branch to remote.
