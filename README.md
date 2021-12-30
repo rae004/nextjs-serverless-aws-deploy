@@ -124,15 +124,16 @@ AWS_ACCOUNT_ID=123456789012
 # Preffered AWS Region for the Pipeline
 AWS_REGION_DEFAULT=us-east-1
 
-# Connection Arn for the Source Repository
-# Docs for how to Setup: https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-create.html
-AWS_REPO_SOURCE_CONNECTION_ARN=arn:aws:codestar-connections:us-east-1:123456789012:connection/62ce35c0-6800-11ec-90d6-0242ac120003
-
 # A string that encodes owner and repository separated by a slash (e.g. 'owner/repo').
 STAGING_REPO_STRING=myUser/someRepoOfMine
 
 # Branch name the will trigger CI/CD Pipeline
 STAGING_SOURCE_BRANCH=develop
+```
+Connection Arn for the Source Repository, see [Creating AWS Codestar Connection](#creating-aws-codestar-connection-to-github) for more detail
+```dotenv
+# Docs for how to Setup: https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-create.html
+AWS_REPO_SOURCE_CONNECTION_ARN=arn:aws:codestar-connections:us-east-1:123456789012:connection/62ce35c0-6800-11ec-90d6-0242ac120003
 ```
 
 The next set of variables are optional. Not setting the domain variables will mean your app will only be available at the Secure CloudFront Url created automatically during deployment, for example: `http://d111111abcdef8.cloudfront.net`. You can then attach that value to a DNS record manually. Either in AWS or with another Registrar.
@@ -367,9 +368,25 @@ The AWS CDK allows you to deploy infrastructure as code. This starter deploys a 
 >* [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 >* [Configure AWS CLI](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites)
 >* [Set Required Variables in .env](#env-example)
+>* Create a new GitHub repo for CI/CD Pipeline
+>* Create [AWS CodeStar connection](#creating-aws-codestar-connection-to-github) to use with the pipeline
 >* Install AWS CDK Package Globally: `yarn global add aws-cdk@^1.128.0`
 >
 > **_Note_**: This Starter is setup to use AWS CDK v1, installing v2 will result in errors.
+
+### Creating AWS Codestar Connection to GitHub
+We need a [Codestar Connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/supported-versions-connections.html) to connect and use a GitHub repository for our pipeline source.
+We will use the AWS cli to create a new Connection to GitHub, then login to the AWS Console to verify the new connection.
+1. Use AWS CLI to [create connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-create-github.html#connections-create-github-cli)
+```shell
+aws codestar-connections create-connection --provider-type Bitbucket --connection-name test-rae-dev-github
+```
+2. Login to AWS Console and [update the pending connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-update.html).
+3. List Connections and copy & save the `ConnectionArn`, you'll need it later.
+```shell
+aws codestar-connections list-connections
+```
+
 
 ### Using CDK Cli
 AWS Cdk commands can be called directly, for example using `cdk ls` will build and then list all Stacks in the cdk app.
