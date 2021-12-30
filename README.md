@@ -382,10 +382,23 @@ We will use the AWS cli to create a new Connection to GitHub, then login to the 
 aws codestar-connections create-connection --provider-type Bitbucket --connection-name test-rae-dev-github
 ```
 2. Login to AWS Console and [update the pending connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-update.html).
-3. List Connections and copy & save the `ConnectionArn`, you'll need it later.
+3. List AWS Codestar Connections.
 ```shell
 aws codestar-connections list-connections
+
+#example Output:
+{
+    "Connections": [
+        {
+            "ConnectionName": "my-github-connection",
+            "ConnectionArn": "arn:aws:codestar-connections:us-east-1:123456789012:connection/208c1c4f-1010-5833-85e5-as56556085da",
+            "ProviderType": "GitHub",
+            "OwnerAccountId": "123456789012",
+            "ConnectionStatus": "AVAILABLE"
+        }
+}
 ```
+4. Copy & save the `ConnectionArn`, you'll need it later.
 
 
 ### Using CDK Cli
