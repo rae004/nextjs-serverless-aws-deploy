@@ -16,7 +16,10 @@ class nextjsAppStage extends Stage {
         new NextStack(this, `serverless-${props.appAbbr}`, {
             buildType: `build-${props.appEnvType}`,
             resources: props.appResources,
-            description: `Serverless ${props.appName} NextJs Build.`,
+            appName: props.appName,
+            description: `Serverless ${
+                props.appName
+            } NextJs Lambda Application Built on ${new Date().toISOString()}`,
             tags: props.awsContextTags,
         });
     }
