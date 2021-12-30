@@ -38,12 +38,13 @@ It uses the same [Boilerplate Code](https://github.com/vercel/next.js/blob/canar
 > **Note**: It is important to use `yarn` version 1.22.* to install dependencies because of the `yarn.lock` file. Using npm would likely result in errors.
 >
 > [_Installing Yarn_](https://classic.yarnpkg.com/lang/en/docs/install/#install-via-npm)
-1. Run the Create Next App utility with this projects GitHub url:
+1. Run the Create Next App utility with this projects GitHub url and setup git hooks.
 ```shell
-yarn create next-app --ts -e https://github.com/rae004/nextjs-serverless-aws-deploy
+yarn create next-app --ts -e https://github.com/rae004/nextjs-serverless-aws-deploy && yarn prepare
 ```
 ---
 2. Follow the interactive experience that guides you through setting up a project.
+   * You will be prompted for a project name, which is used to set up the app directory. 
 ```shell
 yarn create v1.22.15
 [1/4] Resolving packages...
@@ -70,7 +71,7 @@ Installing packages. This might take a couple of minutes.
 4. Add the new remote repo.
    * Replace placeholder text after git@github.com with your info.
 ```shell
-git remote add origin git@github.com:<USER>/<REPO>
+cd <your-new-app-directory> && git remote add origin git@github.com:<USER>/<REPO>
 ```
 ---
 5. Push the `main` branch to remote.
@@ -349,10 +350,15 @@ ESLint configuration options are set in `.eslintrc.json`.
 
 This starter comes with Git Hooks already configured using [Husky](https://www.npmjs.com/package/husky) package.
 
-Commands ran before committing to repo.
+Run the `prepare` command once after creating a new App to enable the hooks.
+```shell
+yarn prepare
+```
+
+Commands ran before committing to a repo.
 > pre-commit: `yarn run test-all`
 
-Commands ran before pushing to repo.
+Commands ran before pushing to a repo.
 > pre-push: `yarn run type-check`
 
 The `package.json` has a script called `prepare` intended to help [initialize Husky](https://typicode.github.io/husky/#/?id=manual). If you need to re-install or re-configure Husky, run `yarn prepare` to generate new Husky files.
@@ -379,13 +385,14 @@ We need a [Codestar Connection](https://docs.aws.amazon.com/dtconsole/latest/use
 We will use the AWS cli to create a new Connection to GitHub, then login to the AWS Console to verify the new connection.
 1. Use AWS CLI to [create connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-create-github.html#connections-create-github-cli)
 ```shell
-aws codestar-connections create-connection --provider-type Bitbucket --connection-name test-rae-dev-github
+aws codestar-connections create-connection --provider-type GitHub --connection-name my-github-connection
 ```
 2. Login to AWS Console and [update the pending connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-update.html).
 3. List AWS Codestar Connections.
 ```shell
 aws codestar-connections list-connections
-
+```
+```shell
 #example Output:
 {
     "Connections": [
@@ -468,7 +475,8 @@ These values are used throughout the CDK Deployment to ensure naming and tagging
 
 ### Deploy Staging CI/CD Pipeline (first time)
 
-1. Push all changes you intend to deploy to the branch set as `STAGING_SOURCE_BRANCH` in `.env`.
+1. Push all changes you intend to deploy to AWS using the branch set as `STAGING_SOURCE_BRANCH` in `.env` as the pipeline source.
+   * All the values set in `.env` must be pushed to the remote repository before deploying the infrastructure 
 ---
 2. Find Staging pipeline name by running `cdk ls`.
     * Make sure to use the pipeline name, using the stage name will result in the app being deployed without a CI/CD pipeline. The pipeline name will **_not_** have any slashes, just hyphens.
@@ -484,4 +492,4 @@ These values are used throughout the CDK Deployment to ensure naming and tagging
    * You will need to manually confirm to continue the deployment.
    * This will deploy the app to AWS via cloudformation.
 ---
-5. Once the CLI is complete you will see the Pipeline running and be able to track progress by searching for the `appName` set in the [CDK App Context](#setting-cdk-app-context) from the [AWS Code Pipeline Console](https://console.aws.amazon.com/codesuite/codepipeline/pipelines)
+5. Once the CLI is complete you will see the Pipeline running and be able to track progress from the [AWS Code Pipeline Console](https://console.aws.amazon.com/codesuite/codepipeline/pipelines), you can find your pipeline by searching for the `appName` set in the [CDK App Context](#setting-cdk-app-context).
