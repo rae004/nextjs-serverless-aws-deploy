@@ -13,10 +13,8 @@ class nextjsServerlessProductionPipeline extends Stack {
         super(scope, id, props);
 
         const appName = this.node.tryGetContext('appName');
-        const appAbbr = this.node.tryGetContext('appAbbr');
         const appResources = this.node.tryGetContext('appResources');
         const productionTag = this.node.tryGetContext('productionEnvTag');
-        const stagingTag = this.node.tryGetContext('stagingEnvTag');
         const awsContextTags = {
             Project: this.node.tryGetContext('projectTag'),
             AppVersion: this.node.tryGetContext('appVersionTag'),
@@ -25,8 +23,8 @@ class nextjsServerlessProductionPipeline extends Stack {
 
         //Get our source repo
         const repo = CodePipelineSource.connection(
-            `${appResources.productionResourceSettings.stagingRepoString}`,
-            `${appResources.productionResourceSettings.stagingSourceBranch}`,
+            `${appResources.productionResourceSettings.sourceRepoString}`,
+            `${appResources.productionResourceSettings.sourceRepoBranch}`,
             {
                 connectionArn: `${appResources.productionResourceSettings.sourceRepoConnectionArn}`,
             },
@@ -51,35 +49,6 @@ class nextjsServerlessProductionPipeline extends Stack {
                     ],
                 }),
             },
-        );
-
-        let validateStaging = {};
-        if (appResources.stagingResourceSettings.domain) {
-            validateStaging = {
-                post: [
-                    new ShellStep('validate-staging-cloudfront-url', {
-                        commands: [
-                            `API_HANDLER_DOMAIN=https://${appResources.stagingResourceSettings.domain}`,
-                            'curl -Ssf $API_HANDLER_DOMAIN',
-                        ],
-                    }),
-                ],
-            };
-        }
-
-        // build staging infrastructure
-        pipeline.addStage(
-            new nextjsAppStage(this, `staging`, {
-                appEnvType: stagingTag,
-                appResources: appResources.stagingResourceSettings,
-                appName,
-                appAbbr,
-                awsContextTags: {
-                    ...awsContextTags,
-                    stagingTag,
-                },
-            }),
-            validateStaging,
         );
 
         const manualApproveProductionPreStep = {
@@ -108,7 +77,6 @@ class nextjsServerlessProductionPipeline extends Stack {
                 appEnvType: productionTag,
                 appResources: appResources.productionResourceSettings,
                 appName,
-                appAbbr,
                 awsContextTags: {
                     ...awsContextTags,
                     productionTag,
