@@ -15,6 +15,7 @@ if (fs.existsSync(`${localEnvPath}`)) {
 }
 
 const appEnvironmentResources = {
+    // todo update prod resource setting property names to match prod.
     productionResourceSettings: {
         lambda: { memoryLimitMiB: 1024 },
         sourceRepoConnectionArn: process.env.AWS_GITHUB_CONNECTION_ARN,

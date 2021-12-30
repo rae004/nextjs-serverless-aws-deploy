@@ -464,7 +464,7 @@ These values are used throughout the CDK Deployment to ensure naming and tagging
 ---
 3. Synth CDK App by running `cdk synth <pipeline-or-stage-name>` (optional but good as a finally test for errors).
    * For example: `cdk synth nextjs-serverless-starter-staging-pipeline`
-   * This will generate the cloudformation template to use when the app is deployed.
+   * This will generate the cloudformation template the CDK will use when deploying the app.
 ---
 4. Deploy CDK App by running `cdk deploy <pipeline-or-stage-name>`
    * For example: `cdk deploy nextjs-serverless-starter-staging-pipeline`
