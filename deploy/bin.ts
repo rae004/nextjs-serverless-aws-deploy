@@ -14,8 +14,8 @@ if (fs.existsSync(`${localEnvPath}`)) {
     dotenv.config({ path: `${envPath}` });
 }
 
-// todo add env domain envs to make configurable.
 const appEnvironmentResources = {
+    // todo update prod resource setting property names to match prod.
     productionResourceSettings: {
         lambda: { memoryLimitMiB: 1024 },
         sourceRepoConnectionArn: process.env.AWS_GITHUB_CONNECTION_ARN,
@@ -36,7 +36,6 @@ const appEnvironmentResources = {
         domainHostedZoneId: process.env.STAGING_HOSTED_ZONE_ID,
         domainZoneName: process.env.STAGING_DOMAIN_ZONE_NAME,
     },
-    deployNotificationList: ['rae004dev@gmail.com'],
 };
 
 (async () => {
@@ -60,6 +59,7 @@ const appEnvironmentResources = {
         await builderStaging.build(true);
 
         // // Create CDK app instance test update
+        // todo pass name and tag values from env for easier configuration.
         const app = new App({
             context: {
                 appName: 'nextjs-serverless-starter',

@@ -70,7 +70,7 @@ class nextjsServerlessStagingPipeline extends Stack {
                 appAbbr,
                 awsContextTags,
             }),
-            //todo get cloudfront URL from AppStage for validation. Check/validate custom domain if set.
+            //todo get cloudfront URL from AppStage for validation.
             validateStaging,
         );
     }
