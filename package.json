@@ -11,7 +11,7 @@
     "start": "next start",
     "type-check": "tsc --pretty --noEmit",
     "lint": "next lint",
-    "format": "next lint --fix",
+    "format": "eslint . --fix --ext ts --ext tsx --ext js",
     "test": "jest",
     "test-update": "jest --update-snapshot",
     "test-coverage": "jest --coverage",

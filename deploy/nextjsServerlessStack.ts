@@ -1,4 +1,10 @@
-import { Construct, Stack, StackProps, Duration } from '@aws-cdk/core';
+import {
+    Construct,
+    Stack,
+    StackProps,
+    Duration,
+    RemovalPolicy,
+} from '@aws-cdk/core';
 import { NextJSLambdaEdge } from '@sls-next/cdk-construct';
 import { Runtime } from '@aws-cdk/aws-lambda';
 import {
@@ -12,6 +18,7 @@ import { Certificate } from '@aws-cdk/aws-certificatemanager';
 
 interface ourStackProps extends StackProps {
     buildType: string;
+    appName: string;
     resources: { [key: string]: any };
 }
 
@@ -67,10 +74,17 @@ export class NextStack extends Stack {
 
         new NextJSLambdaEdge(this, 'NextJsApp', {
             serverlessBuildOutDir: `./${props.buildType}`,
+            description: `Serverless ${
+                props.appName
+            } NextJs Lambda Function Built on ${new Date().toISOString()}`,
             runtime: Runtime.NODEJS_14_X,
             memory: props.resources.lambda.memoryLimitMiB,
             timeout: Duration.seconds(30),
             withLogging: true,
+            s3Props: {
+                autoDeleteObjects: true,
+                removalPolicy: RemovalPolicy.DESTROY,
+            },
             defaultBehavior: {
                 originRequestPolicy: this.nextJSOriginRequestPolicy,
                 allowedMethods: AllowedMethods.ALLOW_ALL,
