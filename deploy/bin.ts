@@ -62,6 +62,15 @@ const appEnvironmentResources = {
         });
         await builderProd.build(true);
 
+        //Build development app directory, per Lambda at Edge Specs
+        const builderStaging = new Builder('.', './build-staging', {
+            env: {
+                NODE_ENV: 'test',
+            },
+            args: ['build'],
+        });
+        await builderStaging.build(true);
+
         // // Create CDK app instance test update
         // todo pass name and tag values from env for easier configuration.
         const app = new App({
@@ -73,6 +82,7 @@ const appEnvironmentResources = {
                 appNameTag: 'NextJs Serverless',
                 appVersionTag: `${version}`,
                 productionEnvTag: 'production',
+                stagingEnvTag: 'staging',
                 appResources: appEnvironmentResources,
             },
         });
