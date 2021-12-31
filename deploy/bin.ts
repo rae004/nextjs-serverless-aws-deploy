@@ -12,6 +12,20 @@ if (fs.existsSync(`${localEnvPath}`)) {
 } else {
     dotenv.config({ path: `${envPath}` });
 }
+const requiredEnvVars = [
+    'AWS_ACCOUNT_ID',
+    'AWS_REGION_DEFAULT',
+    'AWS_GITHUB_CONNECTION_ARN',
+    'AWS_RESOURCE_APP_NAME',
+    'PRODUCTION_REPO_STRING',
+    'PRODUCTION_SOURCE_BRANCH',
+    'STAGING_REPO_STRING',
+    'STAGING_SOURCE_BRANCH',
+];
+const allEnvVarKeys = Object.keys(process.env);
+const missingRequiredEnvs = requiredEnvVars.filter(
+    (key) => !allEnvVarKeys.includes(key) || !process.env[key],
+);
 
 const appEnvironmentResources = {
     // todo update prod resource setting property names to match prod.
@@ -28,6 +42,16 @@ const appEnvironmentResources = {
 };
 
 (async () => {
+    if (missingRequiredEnvs.length > 0) {
+        let errMessage = 'You must set ';
+        for (const missing of missingRequiredEnvs) {
+            errMessage += `${missing}, `;
+        }
+        errMessage = errMessage.slice(0, -2);
+        errMessage += ' in .env file.';
+        throw new Error(errMessage);
+    }
+
     try {
         // Build production app directory, per Lambda at Edge Specs
         const builderProd = new Builder('.', './build-production', {
