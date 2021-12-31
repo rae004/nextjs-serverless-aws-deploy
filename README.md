@@ -212,7 +212,7 @@ Below are explanations for each script you'll find in the `package.json`.
 
 #### Reformat code per ESLint
 >```json
->  "format": "next lint --fix"
+>  "format": "eslint . --fix --ext ts --ext tsx --ext js"
 >```
 >Reformat the project code based on settings in `eslint.json` & `eslintignore`. See the [Linting](#linting) section for more details.
 
