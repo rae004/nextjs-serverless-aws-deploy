@@ -86,10 +86,10 @@ class nextjsServerlessProductionPipeline extends Stack {
                 Environment: `${productionTag}`,
             },
         });
-        ourProductionNextJs.synth();
-        const ourProdCfDomain = Fn.importValue(
-            `${productionTag}CloudfrontDomain`,
-        );
+        // ourProductionNextJs.synth();
+        // const ourProdCfDomain = Fn.importValue(
+        //     `${productionTag}CloudfrontDomain`,
+        // );
         const manualApprovalProductionStep = new ManualApprovalStep(
             'deploy-to-prod',
         );
@@ -97,22 +97,22 @@ class nextjsServerlessProductionPipeline extends Stack {
             installCommands: ['yarn install'],
             commands: ['yarn test'],
         });
-        const productionUrlToValidate = appResources.productionResourceSettings
-            .domain
-            ? appResources.productionResourceSettings.domain
-            : ourProdCfDomain;
-        const validateProductionUrlStep = new ShellStep(
-            'validate-production-url',
-            {
-                commands: [
-                    `API_HANDLER_DOMAIN=https://${productionUrlToValidate}`,
-                    'curl -Ssf $API_HANDLER_DOMAIN',
-                ],
-            },
-        );
+        // const productionUrlToValidate = appResources.productionResourceSettings
+        //     .domain
+        //     ? appResources.productionResourceSettings.domain
+        //     : ourProdCfDomain;
+        // const validateProductionUrlStep = new ShellStep(
+        //     'validate-production-url',
+        //     {
+        //         commands: [
+        //             `API_HANDLER_DOMAIN=https://${productionUrlToValidate}`,
+        //             'curl -Ssf $API_HANDLER_DOMAIN',
+        //         ],
+        //     },
+        // );
         const productionStageOptions = {
             pre: [manualApprovalProductionStep, executeJestTestsStep],
-            post: [validateProductionUrlStep],
+            // post: [validateProductionUrlStep],
         };
         pipeline.addStage(ourProductionNextJs, productionStageOptions);
     }

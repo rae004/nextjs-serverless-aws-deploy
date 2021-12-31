@@ -107,7 +107,8 @@ const appEnvironmentResources = {
             `${appName}-production-pipeline`,
             {
                 env: {
-                    region: 'us-east-1',
+                    region: app.node.tryGetContext('region'),
+                    account: app.node.tryGetContext('account'),
                 },
                 analyticsReporting: true,
                 description: `Deployment of ${productionEnvTag} ${appName} NextJS using Serverless CDK Construct`,
