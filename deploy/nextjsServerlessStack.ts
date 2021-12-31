@@ -4,7 +4,6 @@ import {
     StackProps,
     Duration,
     RemovalPolicy,
-    CfnOutput,
 } from '@aws-cdk/core';
 import { NextJSLambdaEdge } from '@sls-next/cdk-construct';
 import { Runtime } from '@aws-cdk/aws-lambda';
@@ -73,7 +72,7 @@ export class NextStack extends Stack {
             },
         );
 
-        const ourNextJs = new NextJSLambdaEdge(this, 'NextJsApp', {
+        new NextJSLambdaEdge(this, 'NextJsApp', {
             serverlessBuildOutDir: `build-${props.appEnvType}`,
             description: `Serverless ${
                 props.appName
@@ -92,12 +91,6 @@ export class NextStack extends Stack {
                 cachePolicy: CachePolicy.CACHING_OPTIMIZED,
             },
             ...stackDomain,
-        });
-
-        new CfnOutput(this, 'cloudfront-domain', {
-            value: ourNextJs.distribution.distributionDomainName,
-            description: 'The Name of the domain create by cloudfront.',
-            exportName: `${props.appEnvType}CloudfrontDomain`,
         });
     }
 }

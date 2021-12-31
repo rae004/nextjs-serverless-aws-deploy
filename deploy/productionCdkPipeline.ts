@@ -1,4 +1,4 @@
-import { Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
+import { Construct, Stack, StackProps } from '@aws-cdk/core';
 import {
     CodePipeline,
     CodePipelineSource,
@@ -31,6 +31,7 @@ class nextjsServerlessProductionPipeline extends Stack {
             },
         );
 
+        // create a Code Pipeline instance
         const pipeline = new CodePipeline(
             this,
             `${appName}-production-pipeline`,
@@ -52,7 +53,7 @@ class nextjsServerlessProductionPipeline extends Stack {
             },
         );
 
-        // build staging infrastructure
+        // build staging infrastructure to use in pipeline stage
         const ourStagingNextJsApp = new nextjsAppStage(this, `${stagingTag}`, {
             appEnvType: `${stagingTag}`,
             appResources: appResources.stagingResourceSettings,
@@ -62,18 +63,19 @@ class nextjsServerlessProductionPipeline extends Stack {
                 Environment: `${stagingTag}`,
             },
         });
-        ourStagingNextJsApp.synth();
-        const ourStagCfDomain = Fn.importValue(`${stagingTag}CloudfrontDomain`);
-        const stagingStageOptions = {
-            post: [
-                new ShellStep('validate-staging-cloudfront-url', {
-                    commands: [
-                        `API_HANDLER_DOMAIN=https://${ourStagCfDomain}`,
-                        'curl -Ssf $API_HANDLER_DOMAIN',
-                    ],
-                }),
-            ],
-        };
+        const stagingUrlToValidate =
+            appResources.stagingResourceSettings.stagingDomain &&
+            new ShellStep('validate-staging-url', {
+                commands: [
+                    `API_HANDLER_DOMAIN=https://${appResources.stagingResourceSettings.stagingDomain}`,
+                    'curl -Ssf $API_HANDLER_DOMAIN',
+                ],
+            });
+        const stagingStageOptions = stagingUrlToValidate
+            ? {
+                  post: [stagingUrlToValidate],
+              }
+            : {};
         pipeline.addStage(ourStagingNextJsApp, stagingStageOptions);
 
         // build production infrastructure
@@ -86,10 +88,6 @@ class nextjsServerlessProductionPipeline extends Stack {
                 Environment: `${productionTag}`,
             },
         });
-        // ourProductionNextJs.synth();
-        // const ourProdCfDomain = Fn.importValue(
-        //     `${productionTag}CloudfrontDomain`,
-        // );
         const manualApprovalProductionStep = new ManualApprovalStep(
             'deploy-to-prod',
         );
@@ -97,23 +95,22 @@ class nextjsServerlessProductionPipeline extends Stack {
             installCommands: ['yarn install'],
             commands: ['yarn test'],
         });
-        // const productionUrlToValidate = appResources.productionResourceSettings
-        //     .domain
-        //     ? appResources.productionResourceSettings.domain
-        //     : ourProdCfDomain;
-        // const validateProductionUrlStep = new ShellStep(
-        //     'validate-production-url',
-        //     {
-        //         commands: [
-        //             `API_HANDLER_DOMAIN=https://${productionUrlToValidate}`,
-        //             'curl -Ssf $API_HANDLER_DOMAIN',
-        //         ],
-        //     },
-        // );
-        const productionStageOptions = {
-            pre: [manualApprovalProductionStep, executeJestTestsStep],
-            // post: [validateProductionUrlStep],
-        };
+        const validateProductionUrlStep =
+            appResources.productionResourceSettings.domain &&
+            new ShellStep('validate-production-url', {
+                commands: [
+                    `API_HANDLER_DOMAIN=https://${appResources.productionResourceSettings.domain}`,
+                    'curl -Ssf $API_HANDLER_DOMAIN',
+                ],
+            });
+        const productionStageOptions = validateProductionUrlStep
+            ? {
+                  pre: [manualApprovalProductionStep, executeJestTestsStep],
+                  post: [validateProductionUrlStep],
+              }
+            : {
+                  pre: [manualApprovalProductionStep, executeJestTestsStep],
+              };
         pipeline.addStage(ourProductionNextJs, productionStageOptions);
     }
 }
