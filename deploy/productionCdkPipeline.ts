@@ -1,4 +1,4 @@
-import { Construct, Stack, StackProps } from '@aws-cdk/core';
+import { Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
 import {
     CodePipeline,
     CodePipelineSource,
@@ -15,6 +15,7 @@ class nextjsServerlessProductionPipeline extends Stack {
         const appName = this.node.tryGetContext('appName');
         const appResources = this.node.tryGetContext('appResources');
         const productionTag = this.node.tryGetContext('productionEnvTag');
+        const stagingTag = this.node.tryGetContext('stagingEnvTag');
         const awsContextTags = {
             Project: this.node.tryGetContext('projectTag'),
             AppVersion: this.node.tryGetContext('appVersionTag'),
@@ -52,7 +53,13 @@ class nextjsServerlessProductionPipeline extends Stack {
         );
 
         const manualApproveProductionPreStep = {
-            pre: [new ManualApprovalStep('deploy-to-prod')],
+            pre: [
+                new ManualApprovalStep('deploy-to-prod'),
+                new ShellStep('execute-jest-tests', {
+                    installCommands: ['yarn install'],
+                    commands: ['yarn test'],
+                }),
+            ],
         };
         const validateProductionPostStep = {
             post: [
@@ -70,6 +77,30 @@ class nextjsServerlessProductionPipeline extends Stack {
                   ...validateProductionPostStep,
               }
             : { ...manualApproveProductionPreStep };
+
+        const ourStagCfDomain = Fn.importValue(`${stagingTag}CloudfrontDomain`);
+        // build staging infrastructure
+        pipeline.addStage(
+            new nextjsAppStage(this, `${stagingTag}`, {
+                appEnvType: `${stagingTag}`,
+                appResources: appResources.productionResourceSettings,
+                appName,
+                awsContextTags: {
+                    ...awsContextTags,
+                    productionTag,
+                },
+            }),
+            {
+                post: [
+                    new ShellStep('validate-staging-cloudfront-url', {
+                        commands: [
+                            `API_HANDLER_DOMAIN=https://${ourStagCfDomain}`,
+                            'curl -Ssf $API_HANDLER_DOMAIN',
+                        ],
+                    }),
+                ],
+            },
+        );
 
         // build production infrastructure
         pipeline.addStage(

@@ -13,9 +13,9 @@ class nextjsAppStage extends Stage {
         super(scope, id, props);
 
         new NextStack(this, `serverless-${props.appName}`, {
-            buildType: `build-${props.appEnvType}`,
             resources: props.appResources,
             appName: props.appName,
+            appEnvType: props.appEnvType,
             description: `Serverless ${
                 props.appName
             } NextJs Lambda Application Built on ${new Date().toISOString()}`,
