@@ -56,9 +56,9 @@ class nextjsServerlessProductionPipeline extends Stack {
         };
         const validateProductionPostStep = {
             post: [
-                new ShellStep('validate-staging-cloudfront-url', {
+                new ShellStep('validate-production-cloudfront-url', {
                     commands: [
-                        `API_HANDLER_DOMAIN=https://${appResources.stagingResourceSettings.domain}`,
+                        `API_HANDLER_DOMAIN=https://${appResources.productionResourceSettings.domain}`,
                         'curl -Ssf $API_HANDLER_DOMAIN',
                     ],
                 }),
