@@ -22,13 +22,8 @@ const requiredEnvVars = [
     'STAGING_REPO_STRING',
     'STAGING_SOURCE_BRANCH',
 ];
-const allEnvVarKeys = Object.keys(process.env);
-const missingRequiredEnvs = requiredEnvVars.filter(
-    (key) => !allEnvVarKeys.includes(key) || !process.env[key],
-);
-
+const missingRequiredEnvs = requiredEnvVars.filter((key) => !process.env[key]);
 const appEnvironmentResources = {
-    // todo update prod resource setting property names to match prod.
     productionResourceSettings: {
         lambda: { memoryLimitMiB: 1024 },
         sourceRepoConnectionArn: process.env.AWS_GITHUB_CONNECTION_ARN,
@@ -39,9 +34,20 @@ const appEnvironmentResources = {
         domainHostedZoneId: process.env.PRODUCTION_HOSTED_ZONE_ID,
         domainZoneName: process.env.PRODUCTION_DOMAIN_ZONE_NAME,
     },
+    stagingResourceSettings: {
+        lambda: { memoryLimitMiB: 512 },
+        sourceRepoConnectionArn: process.env.AWS_GITHUB_CONNECTION_ARN,
+        sourceRepoString: process.env.PRODUCTION_REPO_STRING,
+        sourceRepoBranch: process.env.PRODUCTION_SOURCE_BRANCH,
+        stagingDomain: process.env.STAGING_DOMAIN,
+        stagingDomainSslCertArn: process.env.STAGING_DOMAIN_SSL_CERT_ARN,
+        stagingDomainHostedZoneId: process.env.STAGING_HOSTED_ZONE_ID,
+        stagingDomainZoneName: process.env.STAGING_DOMAIN_ZONE_NAME,
+    },
 };
 
 (async () => {
+    // check for missing required environment variables.
     if (missingRequiredEnvs.length > 0) {
         let errMessage = 'You must set ';
         for (const missing of missingRequiredEnvs) {
@@ -106,7 +112,7 @@ const appEnvironmentResources = {
                 analyticsReporting: true,
                 description: `Deployment of ${productionEnvTag} ${appName} NextJS using Serverless CDK Construct`,
                 tags: {
-                    Environment: productionEnvTag,
+                    Environment: `${productionEnvTag}`,
                     ...awsContextTags,
                 },
             },

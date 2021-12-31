@@ -52,69 +52,69 @@ class nextjsServerlessProductionPipeline extends Stack {
             },
         );
 
-        const manualApproveProductionPreStep = {
-            pre: [
-                new ManualApprovalStep('deploy-to-prod'),
-                new ShellStep('execute-jest-tests', {
-                    installCommands: ['yarn install'],
-                    commands: ['yarn test'],
-                }),
-            ],
-        };
-        const validateProductionPostStep = {
+        // build staging infrastructure
+        const ourStagingNextJsApp = new nextjsAppStage(this, `${stagingTag}`, {
+            appEnvType: `${stagingTag}`,
+            appResources: appResources.stagingResourceSettings,
+            appName,
+            awsContextTags: {
+                ...awsContextTags,
+                Environment: `${stagingTag}`,
+            },
+        });
+        ourStagingNextJsApp.synth();
+        const ourStagCfDomain = Fn.importValue(`${stagingTag}CloudfrontDomain`);
+        const stagingStageOptions = {
             post: [
-                new ShellStep('validate-production-cloudfront-url', {
+                new ShellStep('validate-staging-cloudfront-url', {
                     commands: [
-                        `API_HANDLER_DOMAIN=https://${appResources.productionResourceSettings.domain}`,
+                        `API_HANDLER_DOMAIN=https://${ourStagCfDomain}`,
                         'curl -Ssf $API_HANDLER_DOMAIN',
                     ],
                 }),
             ],
         };
-        const prodStagOptions = appResources.productionResourceSettings.domain
-            ? {
-                  ...manualApproveProductionPreStep,
-                  ...validateProductionPostStep,
-              }
-            : { ...manualApproveProductionPreStep };
+        pipeline.addStage(ourStagingNextJsApp, stagingStageOptions);
 
-        const ourStagCfDomain = Fn.importValue(`${stagingTag}CloudfrontDomain`);
-        // build staging infrastructure
-        pipeline.addStage(
-            new nextjsAppStage(this, `${stagingTag}`, {
-                appEnvType: `${stagingTag}`,
-                appResources: appResources.productionResourceSettings,
-                appName,
-                awsContextTags: {
-                    ...awsContextTags,
-                    productionTag,
-                },
-            }),
+        // build production infrastructure
+        const ourProductionNextJs = new nextjsAppStage(this, `production`, {
+            appEnvType: productionTag,
+            appResources: appResources.productionResourceSettings,
+            appName,
+            awsContextTags: {
+                ...awsContextTags,
+                Environment: `${productionTag}`,
+            },
+        });
+        ourProductionNextJs.synth();
+        const ourProdCfDomain = Fn.importValue(
+            `${productionTag}CloudfrontDomain`,
+        );
+        const manualApprovalProductionStep = new ManualApprovalStep(
+            'deploy-to-prod',
+        );
+        const executeJestTestsStep = new ShellStep('execute-jest-tests', {
+            installCommands: ['yarn install'],
+            commands: ['yarn test'],
+        });
+        const productionUrlToValidate = appResources.productionResourceSettings
+            .domain
+            ? appResources.productionResourceSettings.domain
+            : ourProdCfDomain;
+        const validateProductionUrlStep = new ShellStep(
+            'validate-production-url',
             {
-                post: [
-                    new ShellStep('validate-staging-cloudfront-url', {
-                        commands: [
-                            `API_HANDLER_DOMAIN=https://${ourStagCfDomain}`,
-                            'curl -Ssf $API_HANDLER_DOMAIN',
-                        ],
-                    }),
+                commands: [
+                    `API_HANDLER_DOMAIN=https://${productionUrlToValidate}`,
+                    'curl -Ssf $API_HANDLER_DOMAIN',
                 ],
             },
         );
-
-        // build production infrastructure
-        pipeline.addStage(
-            new nextjsAppStage(this, `production`, {
-                appEnvType: productionTag,
-                appResources: appResources.productionResourceSettings,
-                appName,
-                awsContextTags: {
-                    ...awsContextTags,
-                    productionTag,
-                },
-            }),
-            prodStagOptions,
-        );
+        const productionStageOptions = {
+            pre: [manualApprovalProductionStep, executeJestTestsStep],
+            post: [validateProductionUrlStep],
+        };
+        pipeline.addStage(ourProductionNextJs, productionStageOptions);
     }
 }
 export { nextjsServerlessProductionPipeline };
