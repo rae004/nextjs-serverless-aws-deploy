@@ -64,10 +64,10 @@ class nextjsServerlessProductionPipeline extends Stack {
             },
         });
         const stagingUrlToValidate =
-            appResources.stagingResourceSettings.stagingDomain &&
+            appResources.stagingResourceSettings.domain &&
             new ShellStep('validate-staging-url', {
                 commands: [
-                    `API_HANDLER_DOMAIN=https://${appResources.stagingResourceSettings.stagingDomain}`,
+                    `API_HANDLER_DOMAIN=https://${appResources.stagingResourceSettings.domain}`,
                     'curl -Ssf $API_HANDLER_DOMAIN',
                 ],
             });

@@ -37,12 +37,12 @@ const appEnvironmentResources = {
     stagingResourceSettings: {
         lambda: { memoryLimitMiB: 512 },
         sourceRepoConnectionArn: process.env.AWS_GITHUB_CONNECTION_ARN,
-        sourceRepoString: process.env.PRODUCTION_REPO_STRING,
-        sourceRepoBranch: process.env.PRODUCTION_SOURCE_BRANCH,
-        stagingDomain: process.env.STAGING_DOMAIN,
-        stagingDomainSslCertArn: process.env.STAGING_DOMAIN_SSL_CERT_ARN,
-        stagingDomainHostedZoneId: process.env.STAGING_HOSTED_ZONE_ID,
-        stagingDomainZoneName: process.env.STAGING_DOMAIN_ZONE_NAME,
+        sourceRepoString: process.env.STAGING_REPO_STRING,
+        sourceRepoBranch: process.env.STAGING_SOURCE_BRANCH,
+        domain: process.env.STAGING_DOMAIN,
+        domainSslCertArn: process.env.STAGING_DOMAIN_SSL_CERT_ARN,
+        domainHostedZoneId: process.env.STAGING_HOSTED_ZONE_ID,
+        domainZoneName: process.env.STAGING_DOMAIN_ZONE_NAME,
     },
 };
 
